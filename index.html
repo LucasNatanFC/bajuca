@@ -54,21 +54,21 @@ button:focus-visible{outline:3px solid var(--caramel-deep);outline-offset:2px}
 .btn .lbl{display:flex;flex-direction:column;align-items:flex-start;line-height:1.1;text-align:left}
 
 /* ---------- INÍCIO ---------- */
-.home{align-items:center;justify-content:center;gap:14px;text-align:center;position:relative;overflow-y:auto}
-.home h1{font-family:var(--display);font-weight:400;font-size:clamp(46px,14vw,62px);line-height:.95;margin:0;letter-spacing:.5px;text-wrap:balance}
+.home{align-items:center;justify-content:safe center;gap:12px;text-align:center;position:relative;overflow-y:auto}
+.home h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,12vw,54px);line-height:.95;margin:0;letter-spacing:.5px;text-wrap:balance}
 .home h1 .j{color:var(--juma)}.home h1 .b{color:var(--bart)}.home h1 .c{color:var(--caramel)}
 .home h1 small{display:block;font-family:var(--body);font-weight:900;font-size:15px;letter-spacing:.5px;color:var(--ink-soft);margin-top:6px}
 .duo{display:flex;justify-content:center;align-items:flex-end;gap:2px;margin:0}
 .duo figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:2px}
-.duo svg{width:min(28vw,118px);aspect-ratio:1;max-width:100%;transform-origin:50% 90%;animation:nod 4.4s ease-in-out infinite}
+.duo svg{width:min(23vw,96px);aspect-ratio:1;max-width:100%;transform-origin:50% 90%;animation:nod 4.4s ease-in-out infinite}
 .duo figure:nth-child(2) svg{animation-delay:-2.2s}
 .duo figcaption{font-family:var(--display);font-size:16px;letter-spacing:.5px;background:var(--card);border-radius:999px;padding:2px 12px;box-shadow:0 2px 0 var(--sky-deep)}
 .duo figure:first-child figcaption{color:var(--juma)}
 .duo figure:nth-child(2) figcaption{color:var(--bart)}
 .duo.sm svg{width:96px}
 @keyframes nod{0%,55%,100%{transform:rotate(0) translateY(0)}62%{transform:rotate(-8deg) translateY(-4px)}70%{transform:rotate(6deg)}78%{transform:rotate(0)}}
-.mods{display:flex;flex-direction:column;gap:12px;width:100%;max-width:380px}
-.mod{background:var(--card);border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:12px;box-shadow:0 4px 0 var(--sky-deep);text-align:left}
+.mods{display:flex;flex-direction:column;gap:10px;width:100%;max-width:380px}
+.mod{background:var(--card);border-radius:20px;padding:12px 14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 4px 0 var(--sky-deep);text-align:left}
 .modhead{display:flex;gap:12px;align-items:center}
 .modhead svg{width:48px;height:48px;flex:none}
 .modhead h2{font-family:var(--display);font-weight:400;font-size:24px;margin:0;line-height:1}
@@ -117,6 +117,17 @@ button:focus-visible{outline:3px solid var(--caramel-deep);outline-offset:2px}
 .cell.bad .dog{animation:shake .35s}
 .cell.hinted::after{content:"";position:absolute;inset:3px;border-radius:8px;box-shadow:inset 0 0 0 3px #fff;animation:flash 1.2s ease-out}
 .board.won .cell .dog{animation:hop .6s ease-in-out infinite alternate;animation-delay:calc(var(--i) * 80ms)}
+
+/* Labirinto */
+.board.maze{background:#D4EDC6;border-color:#2F6E3B}
+.board.maze>svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.mdog{transition:transform .09s linear}
+.mdog .ring{fill:rgba(255,255,255,.55);stroke:#fff;stroke-width:.06;opacity:0;transition:opacity .15s}
+.mdog.active .ring{opacity:1}
+.tgt{transform-box:fill-box;transform-origin:center;animation:breathe 1.6s ease-in-out infinite}
+@keyframes breathe{50%{transform:scale(1.08)}}
+.board.maze.won .dg,.board.maze.won .tgt{transform-box:fill-box;transform-origin:center bottom;animation:hop .5s ease-in-out infinite alternate}
+.hintline{transition:opacity .4s}
 
 /* Cercadinhos */
 .board.shik{background:var(--soil)}
@@ -211,6 +222,22 @@ button:focus-visible{outline:3px solid var(--caramel-deep);outline-offset:2px}
     <symbol id="bone" viewBox="0 0 100 60">
       <g fill="#9A5320"><rect x="20" y="20" width="60" height="20" rx="4"/><circle cx="20" cy="19" r="14"/><circle cx="20" cy="41" r="14"/><circle cx="80" cy="19" r="14"/><circle cx="80" cy="41" r="14"/></g>
       <g fill="#FFF7EA"><rect x="20" y="24" width="60" height="12"/><circle cx="20" cy="19" r="9.5"/><circle cx="20" cy="41" r="9.5"/><circle cx="80" cy="19" r="9.5"/><circle cx="80" cy="41" r="9.5"/></g>
+    </symbol>
+    <symbol id="toy" viewBox="0 0 100 100">
+      <circle cx="20" cy="46" r="13" fill="#8B5A3C" stroke="#4A2C17" stroke-width="3"/><circle cx="20" cy="46" r="6.5" fill="#F3D9A8"/>
+      <circle cx="80" cy="46" r="13" fill="#8B5A3C" stroke="#4A2C17" stroke-width="3"/><circle cx="80" cy="46" r="6.5" fill="#F3D9A8"/>
+      <circle cx="50" cy="50" r="31" fill="#8B5A3C" stroke="#4A2C17" stroke-width="3"/>
+      <path d="M50 40c4-6 14-6 16 1 3 8-2 13-2 16 0 10-7 15-14 15s-14-5-14-15c0-3-5-8-2-16 2-7 12-7 16-1z" fill="#F3D9A8"/>
+      <circle cx="42" cy="49" r="4" fill="#2A1A10"/><circle cx="58" cy="49" r="4" fill="#2A1A10"/>
+      <circle cx="43.3" cy="47.6" r="1.3" fill="#fff"/><circle cx="59.3" cy="47.6" r="1.3" fill="#fff"/>
+      <ellipse cx="50" cy="59" rx="3.5" ry="2.4" fill="#2A1A10"/>
+      <path d="M43 64c4 4 10 4 14 0" stroke="#2A1A10" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      <path d="M50 19c-2-6 2-10 6-9" stroke="#4A2C17" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="ico-labirinto" viewBox="0 0 48 48">
+      <rect x="2" y="2" width="44" height="44" rx="9" fill="#D4EDC6" stroke="#2F6E3B" stroke-width="3"/>
+      <path d="M14 3v20M14 33v12M24 13v22M24 13h10M34 23v22M3 23h11" stroke="#3E8E4E" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+      <use href="#bart" x="3" y="4" width="11" height="11"/><use href="#juma" x="35" y="33" width="11" height="11"/>
     </symbol>
     <symbol id="ico-canteiros" viewBox="0 0 48 48">
       <rect x="2" y="2" width="44" height="44" rx="9" fill="#22304A"/>
@@ -366,18 +393,20 @@ function colorRects(n,rects,seed){var owner=new Array(n*n).fill(-1);rects.forEac
    ===================================================================== */
 var KEY="quintal-caramelo-v2",KEY_OLD="quintal-caramelo-v1";
 function blankMode(){return{level:1,done:{},daily:{}}}
-function freshStore(){return{sound:true,how:{},m:{canteiros:blankMode(),cercadinhos:blankMode()},current:{}}}
+function freshStore(){return{sound:true,how:{},m:{canteiros:blankMode(),cercadinhos:blankMode(),labirinto:blankMode()},current:{}}}
 var store=null;
 try{store=JSON.parse(localStorage.getItem(KEY)||"null")}catch(e){}
 if(!store||!store.m){store=freshStore();
   try{var o=JSON.parse(localStorage.getItem(KEY_OLD)||"null");
     if(o){store.m.canteiros={level:o.level||1,done:o.done||{},daily:o.daily||{}};store.sound=o.sound!==false;store.how.canteiros=!!o.seenHow;
       if(o.current&&o.current.cells)store.current.canteiros={key:o.current.key,state:{cells:o.current.cells},hints:o.current.hints||0,elapsed:o.current.elapsed||0}}}catch(e){}}
+function ensureModes(){["canteiros","cercadinhos","labirinto"].forEach(function(g){if(!store.m[g])store.m[g]=blankMode()});if(!store.how)store.how={};if(!store.current)store.current={}}
+ensureModes();
 function save(){try{localStorage.setItem(KEY,JSON.stringify(store))}catch(e){}}
-function streak(){var d=new Date(),n=0;function has(k){return store.m.canteiros.daily[k]||store.m.cercadinhos.daily[k]}
+function streak(){var d=new Date(),n=0;function has(k){return Object.keys(store.m).some(function(g){return store.m[g].daily[k]})}
   if(!has(todayKey()))d.setDate(d.getDate()-1);
   while(true){var k=d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();if(has(k)){n++;d.setDate(d.getDate()-1)}else break}return n}
-function pawsTotal(){var t=0;["canteiros","cercadinhos"].forEach(function(g){var m=store.m[g];for(var a in m.done)t+=m.done[a].paws||0;for(var b in m.daily)t+=m.daily[b].paws||0});return t}
+function pawsTotal(){var t=0;Object.keys(store.m).forEach(function(g){var m=store.m[g];for(var a in m.done)t+=m.done[a].paws||0;for(var b in m.daily)t+=m.daily[b].paws||0});return t}
 
 /* =====================================================================
    SOM
@@ -499,20 +528,104 @@ ENG.cercadinhos={
 };
 
 /* =====================================================================
+   MODO 3 — LABIRINTO
+   ===================================================================== */
+var MZ_E=2,MZ_S=4,MZ_D=[[0,-1,1,4],[1,0,2,8],[0,1,4,1],[-1,0,8,2]]; // dx, dy, bit, bit oposto (N,L,S,O)
+function genMaze(n,r){var open=new Array(n*n).fill(0),seen=new Uint8Array(n*n),st=[Math.floor(r()*n*n)];seen[st[0]]=1;
+  while(st.length){var c=st[st.length-1],x=c%n,y=c/n|0,opts=[];
+    for(var d=0;d<4;d++){var nx=x+MZ_D[d][0],ny=y+MZ_D[d][1];if(nx<0||ny<0||nx>=n||ny>=n)continue;var j=ny*n+nx;if(!seen[j])opts.push([d,j])}
+    if(!opts.length){st.pop();continue}var o=opts[Math.floor(r()*opts.length)];open[c]|=MZ_D[o[0]][2];open[o[1]]|=MZ_D[o[0]][3];seen[o[1]]=1;st.push(o[1])}
+  var extra=n>=7?Math.floor(n*0.6):0,tries=0; // alguns atalhos deixam o labirinto menos frustrante
+  while(extra>0&&tries++<200){var c2=Math.floor(r()*n*n),d2=Math.floor(r()*4),x2=c2%n+MZ_D[d2][0],y2=(c2/n|0)+MZ_D[d2][1];
+    if(x2<0||y2<0||x2>=n||y2>=n||(open[c2]&MZ_D[d2][2]))continue;open[c2]|=MZ_D[d2][2];open[y2*n+x2]|=MZ_D[d2][3];extra--}
+  return open}
+function mzBfs(n,open,from){var dist=new Array(n*n).fill(-1),prev=new Array(n*n).fill(-1),q=[from];dist[from]=0;
+  for(var h=0;h<q.length;h++){var c=q[h],x=c%n,y=c/n|0;for(var d=0;d<4;d++){if(!(open[c]&MZ_D[d][2]))continue;var j=(y+MZ_D[d][1])*n+x+MZ_D[d][0];if(dist[j]<0){dist[j]=dist[c]+1;prev[j]=c;q.push(j)}}}
+  return{dist:dist,prev:prev}}
+function mzPath(n,open,a,b){var r=mzBfs(n,open,a),p=[b];while(p[0]!==a&&r.prev[p[0]]>=0)p.unshift(r.prev[p[0]]);return p}
+function mzCorner(n,k){return[0,n-1,n*n-n,n*n-1][k]}
+ENG.labirinto={
+  name:"Labirinto",
+  desc:"Ajude a Juma e o Bart a se encontrarem no quintal.",
+  rules:function(){var k=G.p.kind;return k==="both"?["Leve os dois até o macaquinho","Toque num cachorro para escolher","Arraste pelo caminho"]:
+    ["Leve "+(k==="bart"?"o Bart até a Juma":"a Juma até o Bart"),"Arraste pelo caminho","A cerca não deixa passar"]},
+  tip:function(){return G.p.kind==="both"?"Toque na Juma ou no Bart para escolher quem anda · arraste o dedo pelo caminho":"Arraste o dedo pelo caminho · volte pelo rastro para desfazer"},
+  how:'<div><span class="ico" style="background:#7FC8F0">1</span><span>O quintal virou um <b>labirinto de cerca viva</b>. Arraste o dedo pelo caminho e o cachorro vai atrás.</span></div>'+
+      '<div><span class="ico" style="background:#F2A36B">2</span><span>Em algumas fases o <b>Bart procura a Juma</b>, em outras a <b>Juma procura o Bart</b>.</span></div>'+
+      '<div><svg viewBox="0 0 100 100"><use href="#toy"/></svg><span>Às vezes os <b>dois</b> precisam chegar no <b>macaquinho</b>. Toque num cachorro para escolher quem anda.</span></div>'+
+      '<div><span class="ico" style="background:#A88FE0">↩</span><span>Errou o caminho? Volte pelo rastro de patinhas.</span></div>'+
+      '<div><svg viewBox="0 0 100 60"><use href="#bone"/></svg><span>Travou? Um <b>ossinho</b> mostra o caminho por um instante. Sem dicas você ganha 3 patinhas.</span></div>',
+  sizeFor:function(l){return l<=2?5:l<=5?6:l<=9?7:l<=14?8:l<=20?9:l<=30?10:11},
+  diff:function(n){return n<=6?"fácil":n<=8?"tranquilo":n<=10?"esperto":"desafiador"},
+  dailySize:10,seed:function(mode,level){return mode==="daily"?todayKey()*41+5:level*7727+3},
+  create:function(n,seed,o){var r=mulberry32(seed),open=genMaze(n,r),kind=o.mode==="daily"?"both":["bart","juma","both"][(o.level-1)%3];
+    var p={kind:kind,open:open,start:{},toy:-1},c=mzCorner(n,Math.floor(r()*4));
+    var far=function(a){var d=mzBfs(n,open,a).dist,b=a;for(var i=0;i<n*n;i++)if(d[i]>d[b])b=i;return b};
+    if(kind==="both"){p.start.juma=c;p.start.bart=far(c);var dj=mzBfs(n,open,p.start.juma).dist,db=mzBfs(n,open,p.start.bart).dist,best=-1,bv=-1e9;
+      for(var i=0;i<n*n;i++){var v=Math.min(dj[i],db[i])*10-Math.abs(dj[i]-db[i]);if(i!==p.start.juma&&i!==p.start.bart&&v>bv){bv=v;best=i}}p.toy=best;p.movers=["juma","bart"]}
+    else{var other=kind==="bart"?"juma":"bart";p.start[kind]=c;p.start[other]=far(c);p.movers=[kind]}
+    return p},
+  goal:function(who){var p=G.p;return p.kind==="both"?p.toy:p.start[who==="bart"?"juma":"bart"]},
+  empty:function(){var p=G.p,st={pos:{},trail:{},active:p.movers[0]};p.movers.forEach(function(w){st.pos[w]=p.start[w];st.trail[w]=[p.start[w]]});return st},
+  isEmpty:function(){var s=G.state;return G.p.movers.every(function(w){return s.trail[w].length<=1})},
+  build:function(){var n=G.n,p=G.p,open=p.open,h="",w="",tiles="";board.className="board maze";
+    for(var i=0;i<n*n;i++){var x=i%n,y=i/n|0;if((x+y)%2)tiles+='<rect x="'+x+'" y="'+y+'" width="1" height="1"/>';
+      if(x<n-1&&!(open[i]&MZ_E))w+="M"+(x+1)+" "+y+"v1";if(y<n-1&&!(open[i]&MZ_S))w+="M"+x+" "+(y+1)+"h1"}
+    h+='<svg viewBox="0 0 '+n+' '+n+'" aria-hidden="true"><g fill="#C9E7BA">'+tiles+'</g>';
+    h+='<path d="'+w+'" stroke="#2D6B3A" stroke-width=".2" stroke-linecap="round" transform="translate(0 .04)" fill="none"/>';
+    h+='<path d="'+w+'" stroke="#4E9E5C" stroke-width=".17" stroke-linecap="round" fill="none"/>';
+    h+='<polyline class="hintline" points="" fill="none" stroke="#fff" stroke-width=".13" stroke-dasharray=".05 .22" stroke-linecap="round" opacity="0"/>';
+    p.movers.forEach(function(m){h+='<polyline class="trail" data-w="'+m+'" points="" fill="none" stroke="'+(m==="juma"?"#EC5C93":"#3B9BD1")+'" stroke-width=".18" stroke-dasharray=".01 .3" stroke-linecap="round" stroke-linejoin="round" opacity=".75"/>'});
+    var cc=function(i){return{x:i%n+.5,y:(i/n|0)+.5}};
+    if(p.kind==="both"){var t=cc(p.toy);h+='<use class="tgt" href="#toy" x="'+(t.x-.42)+'" y="'+(t.y-.42)+'" width=".84" height=".84"/>'}
+    else{var other=p.kind==="bart"?"juma":"bart",o=cc(p.start[other]);h+='<use class="tgt" href="#'+other+'" x="'+(o.x-.45)+'" y="'+(o.y-.45)+'" width=".9" height=".9"/>'}
+    p.movers.forEach(function(m){h+='<g class="mdog" data-w="'+m+'"><circle class="ring" r=".48"/><use class="dg" href="#'+m+'" x="-.45" y="-.47" width=".9" height=".9"/></g>'});
+    h+='</svg>';board.innerHTML=h;var svg=board.firstChild;
+    G.ui={svg:svg,hint:svg.querySelector(".hintline"),trails:{},dogs:{}};
+    svg.querySelectorAll(".trail").forEach(function(e){G.ui.trails[e.dataset.w]=e});svg.querySelectorAll(".mdog").forEach(function(e){G.ui.dogs[e.dataset.w]=e})},
+  pts:function(arr){var n=G.n;return arr.map(function(i){return(i%n+.5)+","+((i/n|0)+.5)}).join(" ")},
+  render:function(){var n=G.n,s=G.state,p=G.p,ui=G.ui,steps=0,self=this;
+    p.movers.forEach(function(m){var i=s.pos[m],g=ui.dogs[m];g.style.transform="translate("+(i%n+.5)+"px,"+((i/n|0)+.5)+"px)";
+      g.classList.toggle("active",p.movers.length>1&&s.active===m);ui.trails[m].setAttribute("points",self.pts(s.trail[m]));steps+=s.trail[m].length-1});
+    if(p.movers.length>1&&ui.svg.lastChild!==ui.dogs[s.active])ui.svg.appendChild(ui.dogs[s.active]);
+    var won=p.movers.every(function(m){return s.pos[m]===self.goal(m)});
+    return{label:steps+(steps===1?" passo":" passos"),bad:0,won:won}},
+  canGo:function(c,d){var n=G.n,x=c%n+MZ_D[d][0],y=(c/n|0)+MZ_D[d][1];if(x<0||y<0||x>=n||y>=n||!(G.p.open[c]&MZ_D[d][2]))return -1;return y*n+x},
+  step:function(who,nxt){var tr=G.state.trail[who],k=tr.indexOf(nxt);if(k>=0)tr.length=k+1;else tr.push(nxt);G.state.pos[who]=nxt;tone(620+Math.random()*80,.03,"sine",.04)},
+  toward:function(t){var n=G.n,s=G.state,who=s.active,guard=0;
+    while(guard++<n*2){var c=s.pos[who];if(c===t)break;var dx=t%n-c%n,dy=(t/n|0)-(c/n|0),order=[],hd=dx>0?1:3,vd=dy>0?2:0;
+      if(Math.abs(dx)>=Math.abs(dy)){if(dx)order.push(hd);if(dy)order.push(vd)}else{if(dy)order.push(vd);if(dx)order.push(hd)}
+      var moved=false;for(var k=0;k<order.length;k++){var nx=this.canGo(c,order[k]);if(nx>=0){this.step(who,nx);moved=true;break}}
+      if(!moved||(G.p.movers.length===1&&s.pos[who]===this.goal(who)))break}},
+  down:function(i){var s=G.state,p=G.p;D={before:clone()};
+    if(p.movers.length>1){var hit=p.movers.filter(function(m){return s.pos[m]===i});if(hit.length&&hit.indexOf(s.active)<0){s.active=hit[0];sfx("mark")}}
+    this.toward(i);render()},
+  move:function(i){this.toward(i);render()},
+  up:function(){var d=D;D=null;commit(d.before)},
+  key:function(dir){var s=G.state,before=clone();
+    if(dir==="swap"){if(G.p.movers.length>1){s.active=s.active==="juma"?"bart":"juma";sfx("mark")}}
+    else{var nx=this.canGo(s.pos[s.active],dir);if(nx>=0)this.step(s.active,nx)}
+    commit(before)},
+  hint:function(){var s=G.state,p=G.p,self=this,who=s.pos[s.active]===this.goal(s.active)?p.movers.filter(function(m){return s.pos[m]!==self.goal(m)})[0]:s.active;
+    if(!who)return null;var path=mzPath(G.n,p.open,s.pos[who],this.goal(who)),ln=G.ui.hint;
+    return function(){ln.setAttribute("points",self.pts(path));ln.style.opacity="1";clearTimeout(self._ht);self._ht=setTimeout(function(){ln.style.opacity="0"},2600)}}
+};
+
+/* =====================================================================
    CICLO DO JOGO
    ===================================================================== */
 function puzzleKey(mode,level){return mode==="daily"?"d"+todayKey():"l"+level}
 function startGame(game,mode,level){
-  var E=ENG[game],n=mode==="daily"?E.dailySize:sizeFor(level),seed=E.seed(mode,level);
+  var E=ENG[game],n=mode==="daily"?E.dailySize:(E.sizeFor?E.sizeFor(level):sizeFor(level)),seed=E.seed(mode,level);
   G={game:game,key:puzzleKey(mode,level),mode:mode,level:level,n:n,hints:0,elapsed:0,startAt:null,won:false,undo:[]};
-  G.p=E.create(n,seed);G.state=E.empty(n);
+  G.p=E.create(n,seed,{mode:mode,level:level});G.state=E.empty(n);
   var cur=store.current[game];
   if(cur&&cur.key===G.key&&cur.state){G.state=cur.state;G.hints=cur.hints||0;G.elapsed=cur.elapsed||0}
   showView("game");board.style.setProperty("--n",n);E.build();sizeCell();
   $("lvlTitle").textContent=mode==="daily"?"Desafio do dia":E.name+" "+level;
-  $("lvlSub").textContent=n+"×"+n+" · "+(mode==="daily"?E.name.toLowerCase():diffName(n));
-  $("rules").innerHTML=E.rules.map(function(t){return'<div class="rule">'+t+'</div>'}).join("");
-  $("tip").textContent=E.tip;lastBad=0;
+  $("lvlSub").textContent=n+"×"+n+" · "+(mode==="daily"?E.name.toLowerCase():(E.diff?E.diff(n):diffName(n)));
+  $("rules").innerHTML=(typeof E.rules==="function"?E.rules():E.rules).map(function(t){return'<div class="rule">'+t+'</div>'}).join("");
+  $("tip").textContent=typeof E.tip==="function"?E.tip():E.tip;lastBad=0;
   render();G.startAt=performance.now();
   if(!store.how[game])openHow();
 }
@@ -555,7 +668,7 @@ function win(){G.won=true;G.elapsed=G.elapsed+(performance.now()-G.startAt);G.st
   else{if(better(m.done[G.level]))m.done[G.level]=rec;if(m.level<=G.level)m.level=G.level+1}
   delete store.current[G.game];save();sfx("win");board.classList.add("won");render();
   setTimeout(function(){
-    $("winTitle").textContent=G.mode==="daily"?"Desafio vencido!":G.game==="cercadinhos"?"Todo mundo cercado!":"Todo mundo no lugar!";
+    $("winTitle").textContent=G.mode==="daily"?"Desafio vencido!":G.game==="cercadinhos"?"Todo mundo cercado!":G.game==="labirinto"?(G.p.kind==="both"?"Hora de brincar!":"Encontrou!"):"Todo mundo no lugar!";
     $("winTime").textContent=fmt(G.elapsed);$("winHints").textContent=G.hints;
     var r=$("rating");r.innerHTML="";for(var i=0;i<3;i++)r.insertAdjacentHTML("beforeend",'<svg viewBox="0 0 100 100" class="'+(i<paws?"":"off")+'"><use href="#paw"/></svg>');
     var msgs=["Que faro! Nem a Juma nem o Bart precisaram ajudar.","Bom trabalho! Só um ossinho gasto.","Conseguiu! Na próxima tenta com menos ossinhos."];
@@ -568,15 +681,17 @@ $("homeBtn").onclick=function(){$("winOv").hidden=true;showView("home")};
 function openHow(){var E=eng();$("howTitle").textContent=E.name;$("howBody").innerHTML=E.how;$("howOv").hidden=false;if(G&&!G.won&&G.startAt){G.elapsed=elapsed();G.startAt=null}}
 $("howClose").onclick=function(){$("howOv").hidden=true;store.how[G.game]=true;save();if(G&&!G.won&&!G.startAt)G.startAt=performance.now()};
 $("helpBtn").onclick=openHow;
+document.addEventListener("keydown",function(e){if(!G||G.won||$("game").hidden||!$("howOv").hidden||!$("winOv").hidden)return;var E=eng();if(!E.key)return;
+  var dir={ArrowUp:0,ArrowRight:1,ArrowDown:2,ArrowLeft:3}[e.key];if(dir!==undefined){e.preventDefault();E.key(dir)}else if(e.key===" "){e.preventDefault();E.key("swap")}});
 
 /* =====================================================================
    INÍCIO
    ===================================================================== */
 function buildHome(){var box=$("mods");box.innerHTML="";
-  Object.keys(ENG).forEach(function(g){var E=ENG[g],m=store.m[g],lv=m.level,n=sizeFor(lv),resuming=store.current[g]&&store.current[g].key==="l"+lv,d=m.daily[todayKey()];
+  Object.keys(ENG).forEach(function(g){var E=ENG[g],m=store.m[g],lv=m.level,n=E.sizeFor?E.sizeFor(lv):sizeFor(lv),resuming=store.current[g]&&store.current[g].key==="l"+lv,d=m.daily[todayKey()];
     var el=document.createElement("div");el.className="mod";
     el.innerHTML='<div class="modhead"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#ico-'+g+'"/></svg><div><h2>'+E.name+'</h2><p>'+E.desc+'</p></div></div>'+
-      '<div class="modbtns"><button class="btn primary" data-act="play"><span class="lbl"><span>'+(resuming?"Continuar ":"Nível ")+lv+'</span><small>'+n+'×'+n+' · '+diffName(n)+'</small></span></button>'+
+      '<div class="modbtns"><button class="btn primary" data-act="play"><span class="lbl"><span>'+(resuming?"Continuar ":"Nível ")+lv+'</span><small>'+n+'×'+n+' · '+(E.diff?E.diff(n):diffName(n))+'</small></span></button>'+
       '<button class="btn soft" data-act="daily"><span class="lbl"><span class="'+(d?"done":"")+'">'+(d?"Dia ✓":"Desafio do dia")+'</span><small>'+(d?"Feito em "+fmt(d.time):E.dailySize+"×"+E.dailySize+" · todo mundo igual")+'</small></span></button></div>';
     el.querySelector('[data-act="play"]').onclick=function(){startGame(g,"level",store.m[g].level)};
     el.querySelector('[data-act="daily"]').onclick=function(){startGame(g,"daily",0)};
@@ -591,7 +706,7 @@ document.addEventListener("visibilitychange",function(){if(!G||G.won||$("game").
 
 /* Boot (com suporte a atualização ao vivo) */
 function start(data){
-  if(data&&data.store&&data.store.m)store=data.store;
+  if(data&&data.store&&data.store.m){store=data.store;ensureModes()}
   paintSound();
   if(data&&data.view==="game"&&data.game&&ENG[data.game])startGame(data.game,data.mode,data.level);else showView("home");
 }
