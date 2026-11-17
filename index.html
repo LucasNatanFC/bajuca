@@ -145,14 +145,10 @@ button:focus-visible{outline:3px solid var(--caramel-deep);outline-offset:2px}
 .peek svg{width:100%;height:100%;display:block}
 
 /* Hora do Passeio */
-.board.bus{aspect-ratio:auto;display:flex;flex-direction:column;width:min(100%,440px,calc(58vh - 96px));background:#7D8796}
-.bq{display:flex;align-items:center;gap:3px;padding:6px 8px;background:#DCEBCF;border-bottom:3px solid #B9CFA6;min-height:calc(var(--cell) * var(--n) / 9)}
-.bq .stop{flex:none;width:calc(var(--cell) * var(--n) / 9);height:calc(var(--cell) * var(--n) / 9)}
-.bq .pups{display:flex;gap:2px;align-items:center;min-width:0;overflow:hidden;flex:1}
-.bq .pup{flex:none;width:calc(var(--cell) * var(--n) / 13);height:calc(var(--cell) * var(--n) / 13)}
-.bq .pup:first-child{width:calc(var(--cell) * var(--n) / 10);height:calc(var(--cell) * var(--n) / 10);animation:bob .7s ease-in-out infinite alternate}
-@keyframes bob{to{transform:translateY(-12%)}}
-.bq .more{flex:none;font-family:var(--display);font-size:14px;color:var(--ink);background:#fff;border-radius:999px;padding:1px 8px}
+.board.bus{aspect-ratio:auto;display:flex;flex-direction:column;width:min(100%,440px,calc(77vh - 250px));background:#7D8796}
+.bq{background:#BFE3A8;border-bottom:3px solid #9CCB86;line-height:0}
+.bq svg{width:100%;height:auto;display:block}
+.sq-count{font-family:var(--display);font-size:12px;fill:var(--ink)}
 .bslots{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:8px 10px 7px;background:#7D8796;border-bottom:3px solid #5E6878}
 .bslot{position:relative;aspect-ratio:.78;border:2px dashed rgba(255,255,255,.55);border-radius:10px}
 .bslot .park,.bslot .ghost{position:absolute;inset:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
@@ -764,6 +760,49 @@ ENG.foto={
 };
 
 /* =====================================================================
+   FILA EM SERPENTINA — filhotes em 2 faixas andando por um caminho
+   ===================================================================== */
+function snakePoints(way,rad){
+  var raw=[way[0].slice()];
+  for(var i=1;i<way.length-1;i++){var p=way[i],A=way[i-1],B=way[i+1];
+    var ax=p[0]-A[0],ay=p[1]-A[1],al=Math.hypot(ax,ay),bx=B[0]-p[0],by=B[1]-p[1],bl=Math.hypot(bx,by),rr=Math.min(rad,al/2,bl/2);
+    var s=[p[0]-ax/al*rr,p[1]-ay/al*rr],e=[p[0]+bx/bl*rr,p[1]+by/bl*rr];raw.push(s);
+    for(var t=0.0625;t<1;t+=0.0625){var u=1-t;raw.push([u*u*s[0]+2*u*t*p[0]+t*t*e[0],u*u*s[1]+2*u*t*p[1]+t*t*e[1]])}
+    raw.push(e)}
+  raw.push(way[way.length-1].slice());
+  var out=[raw[0].slice()],carry=0;
+  for(var j=1;j<raw.length;j++){var a=raw[j-1],b=raw[j],seg=Math.hypot(b[0]-a[0],b[1]-a[1]);if(!seg)continue;var pos=1-carry;
+    while(pos<=seg){out.push([a[0]+(b[0]-a[0])*pos/seg,a[1]+(b[1]-a[1])*pos/seg]);pos+=1}
+    carry=seg-(pos-1)}
+  return out}
+function SnakeQueue(host,o){
+  var SVGNS="http://www.w3.org/2000/svg",pts=snakePoints(o.way,o.r),L=pts.length-1,d="M"+pts[0][0].toFixed(1)+" "+pts[0][1].toFixed(1);
+  for(var k=3;k<L;k+=3)d+="L"+pts[k][0].toFixed(1)+" "+pts[k][1].toFixed(1);d+="L"+pts[L][0].toFixed(1)+" "+pts[L][1].toFixed(1);
+  host.innerHTML='<svg class="sq" viewBox="0 0 '+o.w+' '+o.h+'" aria-hidden="true">'+(o.under||"")+
+    '<path d="'+d+'" fill="none" stroke="'+o.edge+'" stroke-width="'+(o.road+6)+'" stroke-linecap="round" stroke-linejoin="round"/>'+
+    '<path d="'+d+'" fill="none" stroke="'+o.fill+'" stroke-width="'+o.road+'" stroke-linecap="round" stroke-linejoin="round"/>'+
+    '<g class="sq-pups"></g>'+(o.over||"")+'</svg>';
+  var g=host.querySelector(".sq-pups"),per=o.step/o.lanes,cap=Math.ceil(L/per)+o.lanes+3,pool=[];
+  for(var n=0;n<cap;n++){var el=document.createElementNS(SVGNS,"use");el.setAttribute("href","#pup");el.setAttribute("x",-o.pup/2);el.setAttribute("y",-o.pup/2);
+    el.setAttribute("width",o.pup);el.setAttribute("height",o.pup);el.style.display="none";g.appendChild(el);pool.push({el:el,i:-1})}
+  var end=pts[L],pre=pts[Math.max(0,L-6)],tl=Math.hypot(end[0]-pre[0],end[1]-pre[1])||1,tx=(end[0]-pre[0])/tl,ty=(end[1]-pre[1])/tl;
+  var cur=0,tgt=0,queue=[],raf=0,reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function place(){var base=Math.floor(cur)-2;
+    for(var j=0;j<cap;j++){var i=base+j,slot=pool[((i%cap)+cap)%cap],u=slot.el;
+      if(i<0||i>=queue.length){u.style.display="none";slot.i=-1;continue}
+      var dist=(i-cur)*per,lane=i%o.lanes,off=(lane-(o.lanes-1)/2)*o.gap,x,y,sc=1;
+      if(dist<0){if(dist<=-per*2){u.style.display="none";continue}sc=1+dist/(per*2);x=end[0]-tx*dist-ty*off;y=end[1]-ty*dist+tx*off}
+      else{var kk=Math.round(L-dist);if(kk<0){u.style.display="none";continue}
+        var a=pts[Math.max(0,kk-3)],b=pts[Math.min(L,kk+3)],dx=b[0]-a[0],dy=b[1]-a[1],dl=Math.hypot(dx,dy)||1;
+        x=pts[kk][0]-dy/dl*off;y=pts[kk][1]+dx/dl*off}
+      u.style.display="";u.setAttribute("transform","translate("+x.toFixed(1)+" "+y.toFixed(1)+")"+(sc<1?" scale("+sc.toFixed(2)+")":""));
+      if(slot.i!==i){slot.i=i;u.style.color=o.colors[queue[i]]}}}
+  function frame(){var diff=tgt-cur;if(Math.abs(diff)<0.02||reduce){cur=tgt;place();raf=0;return}
+    cur+=diff*0.2+(diff>0?0.02:-0.02);if((tgt-cur)*diff<0)cur=tgt;place();raf=requestAnimationFrame(frame)}
+  return{set:function(q,qu){queue=qu;tgt=q;if(!raf)raf=requestAnimationFrame(frame)},
+    snap:function(q,qu){queue=qu;cur=tgt=q;place()}}}
+
+/* =====================================================================
    MODO 5 — HORA DO PASSEIO (estacionamento travado + fila por cor)
    ===================================================================== */
 var BUS_COLORS=["#E5484D","#3B82F6","#F5B82E","#3FB66B","#EC5C93","#8B5CF6","#F07E2E","#22B8CF"];
@@ -819,7 +858,7 @@ function busVanSVG(len,dir,color){var L=len*100,W=dir%2?L:100,H=dir%2?100:L,cx=(
     '<path d="M'+(cx-20)+' 50h34m-14-15l15 15-15 15" stroke="#fff" stroke-width="11" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'+
     '</g></svg>'}
 ENG.passeio={
-  name:"Hora do Passeio",
+  name:"Hora do Passeio",hideRules:true,
   desc:"Tire as vans do estacionamento e leve cada filhote na van da sua cor.",
   rules:["Toque numa van com a saída livre","Ela vai para uma vaga","Filhotes entram na van da sua cor"],
   tip:"Toque numa van: ela sai na direção da seta se nada estiver na frente · são só 5 vagas!",
@@ -835,15 +874,19 @@ ENG.passeio={
   empty:function(){var P=G.p;return{jam:P.vans.map(function(){return true}),slots:new Array(BUS_SLOTS).fill(-1),seats:P.vans.map(function(){return 0}),q:0,moves:0}},
   isEmpty:function(){return G.state.moves===0},
   build:function(){var n=G.n,P=G.p,h="";board.className="board bus";
-    h+='<div class="bq"><svg class="stop" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="47" fill="#fff" stroke="#22304A" stroke-width="5"/><use href="#juma" x="8" y="6" width="84" height="84"/></svg><div class="pups"></div><span class="more"></span></div>';
+    h+='<div class="bq"></div>';
     h+='<div class="bslots">';for(var s=0;s<BUS_SLOTS;s++)h+='<div class="bslot"><div class="park"></div></div>';h+='</div>';
     h+='<div class="jam">';P.vans.forEach(function(v){var hz=v.dir%2===1;
       h+='<div class="van" data-id="'+v.id+'" style="left:'+(v.x/n*100)+'%;top:'+(v.y/n*100)+'%;width:'+((hz?v.len:1)/n*100)+'%;height:'+((hz?1:v.len)/n*100)+'%">'+busVanSVG(v.len,v.dir,BUS_COLORS[v.color])+'</div>'});
     h+='</div><div class="stuck" hidden><b>Estacionamento lotado!</b><span>Nenhuma vaga tem van da cor do filhote da frente.</span><div class="row"><button class="btn primary" data-a="undo">Desfazer</button><button class="btn soft" data-a="clear">Recomeçar</button></div></div>';
-    board.innerHTML=h;var ui={pups:board.querySelector(".pups"),more:board.querySelector(".more"),slots:[].slice.call(board.querySelectorAll(".bslot")),vans:{},stuck:board.querySelector(".stuck"),last:[]};
+    board.innerHTML=h;var ui={slots:[].slice.call(board.querySelectorAll(".bslot")),vans:{},stuck:board.querySelector(".stuck"),last:[]};
     board.querySelectorAll(".van").forEach(function(el){ui.vans[el.dataset.id]=el});
     ui.stuck.querySelector('[data-a="undo"]').onclick=function(){$("undoBtn").click()};
     ui.stuck.querySelector('[data-a="clear"]').onclick=function(){$("clearBtn").click()};
+    ui.snake=SnakeQueue(board.querySelector(".bq"),{w:360,h:112,way:[[-30,24],[326,24],[326,88],[74,88]],r:30,road:44,fill:"#F3E3C0",edge:"#D4BE8E",lanes:2,gap:19,pup:22,step:21,colors:BUS_COLORS,
+      under:'<rect width="360" height="112" fill="#BFE3A8"/><circle cx="96" cy="57" r="7" fill="#8CC97A"/><circle cx="300" cy="57" r="6" fill="#8CC97A"/>',
+      over:'<rect x="136" y="47" width="88" height="19" rx="9.5" fill="#fff"/><text class="sq-count" x="180" y="61" text-anchor="middle"></text><circle cx="40" cy="88" r="21" fill="#fff" stroke="#22304A" stroke-width="3"/><use href="#juma" x="22" y="69" width="36" height="36"/>'});
+    ui.count=board.querySelector(".sq-count");ui.snake.snap(G.state.q,P.queue);
     G.ui=ui},
   render:function(){var P=G.p,st=G.state,ui=G.ui,n=G.n,self=this;
     P.vans.forEach(function(v){var el=ui.vans[v.id];if(st.jam[v.id]){if(el.hidden||el.classList.contains("drive")){el.hidden=false;el.classList.remove("drive");el.style.transform=""}}
@@ -852,8 +895,7 @@ ENG.passeio={
       if(String(id)!==pk.dataset.id){pk.dataset.id=id;pk.className="park"+(id>=0?" pop":"");
         pk.innerHTML=id>=0?busVanSVG(P.vans[id].len,0,BUS_COLORS[P.vans[id].color])+'<span class="seat" style="background:'+BUS_COLORS[P.vans[id].color]+'"></span>':""}
       if(id>=0)pk.lastChild.textContent=P.vans[id].cap-st.seats[id]});
-    var vis=10,h="";for(var i=st.q;i<Math.min(P.queue.length,st.q+vis);i++)h+='<svg class="pup" viewBox="0 0 100 100" style="color:'+BUS_COLORS[P.queue[i]]+'"><use href="#pup"/></svg>';
-    ui.pups.innerHTML=h;var rest=P.queue.length-st.q-vis;ui.more.textContent=rest>0?"+"+rest:"";ui.more.hidden=rest<=0;
+    ui.snake.set(st.q,P.queue);var left=P.queue.length-st.q;ui.count.textContent=left?"faltam "+left:"todos a bordo!";
     var stuck=st.q<P.queue.length&&st.slots.indexOf(-1)<0&&busFull(P,st)<0&&busTarget(P,st,busFront(P,st))<0;
     ui.stuck.hidden=!stuck;
     this.kick();
@@ -894,7 +936,7 @@ function startGame(game,mode,level){
   showView("game");board.style.setProperty("--n",n);E.build();sizeCell();
   $("lvlTitle").textContent=mode==="daily"?"Desafio do dia":E.name+" "+level;
   $("lvlSub").textContent=n+"×"+n+" · "+(mode==="daily"?E.name.toLowerCase():(E.diff?E.diff(n):diffName(n)));
-  $("rules").innerHTML=(typeof E.rules==="function"?E.rules():E.rules).map(function(t){return'<div class="rule">'+t+'</div>'}).join("");
+  $("rules").hidden=!!E.hideRules;$("rules").innerHTML=(typeof E.rules==="function"?E.rules():E.rules).map(function(t){return'<div class="rule">'+t+'</div>'}).join("");
   $("tip").textContent=typeof E.tip==="function"?E.tip():E.tip;lastBad=0;
   render();G.startAt=performance.now();
   if(!store.how[game])openHow();
