@@ -144,6 +144,34 @@ button:focus-visible{outline:3px solid var(--caramel-deep);outline-offset:2px}
 .peek{position:absolute;inset:0;z-index:3;animation:fade .2s}
 .peek svg{width:100%;height:100%;display:block}
 
+/* Hora do Passeio */
+.board.bus{aspect-ratio:auto;display:flex;flex-direction:column;width:min(100%,440px,calc(58vh - 96px));background:#7D8796}
+.bq{display:flex;align-items:center;gap:3px;padding:6px 8px;background:#DCEBCF;border-bottom:3px solid #B9CFA6;min-height:calc(var(--cell) * var(--n) / 9)}
+.bq .stop{flex:none;width:calc(var(--cell) * var(--n) / 9);height:calc(var(--cell) * var(--n) / 9)}
+.bq .pups{display:flex;gap:2px;align-items:center;min-width:0;overflow:hidden;flex:1}
+.bq .pup{flex:none;width:calc(var(--cell) * var(--n) / 13);height:calc(var(--cell) * var(--n) / 13)}
+.bq .pup:first-child{width:calc(var(--cell) * var(--n) / 10);height:calc(var(--cell) * var(--n) / 10);animation:bob .7s ease-in-out infinite alternate}
+@keyframes bob{to{transform:translateY(-12%)}}
+.bq .more{flex:none;font-family:var(--display);font-size:14px;color:var(--ink);background:#fff;border-radius:999px;padding:1px 8px}
+.bslots{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:8px 10px 7px;background:#7D8796;border-bottom:3px solid #5E6878}
+.bslot{position:relative;aspect-ratio:.78;border:2px dashed rgba(255,255,255,.55);border-radius:10px}
+.bslot .park,.bslot .ghost{position:absolute;inset:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.bslot svg{height:72%;width:auto;max-width:100%}
+.bslot .park.pop svg{animation:pop .25s cubic-bezier(.3,1.6,.6,1)}
+.bslot .seat{font-family:var(--display);font-size:14px;line-height:1.25;color:#fff;border-radius:6px;padding:0 7px;border:2px solid rgba(0,0,0,.25);font-variant-numeric:tabular-nums}
+.bslot .ghost{animation:busLeave .45s ease-in forwards}
+@keyframes busLeave{to{transform:translateY(-160%);opacity:0}}
+.jam{position:relative;width:100%;aspect-ratio:1;max-width:100%;background:#C3CCD7;background-image:linear-gradient(rgba(255,255,255,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.4) 1px,transparent 1px);background-size:calc(100% / var(--n)) calc(100% / var(--n))}
+.van{position:absolute;box-sizing:border-box;padding:2px;cursor:pointer;transition:transform .38s cubic-bezier(.5,0,.9,.6),opacity .38s}
+.van svg{width:100%;height:100%;display:block;pointer-events:none}
+.van.drive{opacity:0;pointer-events:none}
+.van.hinted{animation:vanHint .6s ease-in-out 3;z-index:2}
+@keyframes vanHint{50%{transform:scale(1.12);filter:drop-shadow(0 0 6px #fff) brightness(1.15)}}
+.stuck{position:absolute;left:7%;right:7%;bottom:6%;z-index:4;background:var(--card);border-radius:16px;padding:12px;text-align:center;display:flex;flex-direction:column;gap:6px;box-shadow:0 6px 0 rgba(34,48,74,.3);font-size:14px;color:var(--ink-soft);animation:rise .3s}
+.stuck b{font-family:var(--display);font-weight:400;font-size:22px;color:var(--ink)}
+.stuck .row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.stuck .btn{font-size:16px;padding:10px}
+
 /* Cercadinhos */
 .board.shik{background:var(--soil)}
 .board.shik .cell{background:var(--soil);border-color:rgba(138,90,43,.22)}
@@ -293,6 +321,27 @@ button:focus-visible{outline:3px solid var(--caramel-deep);outline-offset:2px}
       <svg x="5" y="31" width="12" height="12" viewBox="100 200 100 100"><use href="#scene0" width="300" height="300"/></svg>
       <svg x="18" y="31" width="12" height="12" viewBox="0 200 100 100"><use href="#scene0" width="300" height="300"/></svg>
       <svg x="31" y="31" width="12" height="12" viewBox="100 0 100 100"><use href="#scene0" width="300" height="300"/></svg>
+    </symbol>
+    <symbol id="pup" viewBox="0 0 100 100">
+      <path d="M22 30C10 30 5 52 12 64c5 8 15 4 17-6l4-24z" fill="currentColor" stroke="#2A1A10" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M78 30c12 0 17 22 10 34-5 8-15 4-17-6l-4-24z" fill="currentColor" stroke="#2A1A10" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M22 30C10 30 5 52 12 64c5 8 15 4 17-6l4-24zM78 30c12 0 17 22 10 34-5 8-15 4-17-6l-4-24z" fill="#000" opacity=".22"/>
+      <circle cx="50" cy="54" r="33" fill="currentColor" stroke="#2A1A10" stroke-width="4"/>
+      <ellipse cx="50" cy="68" rx="17" ry="13" fill="#FFF6EA"/>
+      <circle cx="38" cy="50" r="5.5" fill="#2A1A10"/><circle cx="62" cy="50" r="5.5" fill="#2A1A10"/>
+      <circle cx="39.8" cy="48" r="2" fill="#fff"/><circle cx="63.8" cy="48" r="2" fill="#fff"/>
+      <ellipse cx="50" cy="62" rx="6" ry="4.2" fill="#2A1A10"/>
+      <path d="M44 70c3 3 9 3 12 0" stroke="#2A1A10" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="ico-passeio" viewBox="0 0 48 48">
+      <rect x="2" y="2" width="44" height="44" rx="9" fill="#C3CCD7" stroke="#22304A" stroke-width="3"/>
+      <svg x="5" y="6" width="26" height="13" viewBox="0 0 200 100">
+        <rect x="6" y="10" width="188" height="80" rx="24" fill="#E5484D" stroke="rgba(0,0,0,.32)" stroke-width="5"/><path d="M60 50h70m-25-28l28 28-28 28" stroke="#fff" stroke-width="16" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg x="31" y="6" width="13" height="26" viewBox="0 0 100 200">
+        <rect x="10" y="6" width="80" height="188" rx="24" fill="#3B82F6" stroke="rgba(0,0,0,.32)" stroke-width="5"/><path d="M50 140V70m-28 25l28-28 28 28" stroke="#fff" stroke-width="16" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg x="5" y="22" width="13" height="13" viewBox="0 0 100 100" style="color:#3B82F6"><use href="#pup"/></svg>
+      <svg x="17" y="22" width="13" height="13" viewBox="0 0 100 100" style="color:#E5484D"><use href="#pup"/></svg>
+      <svg x="10" y="33" width="13" height="13" viewBox="0 0 100 100" style="color:#F5B82E"><use href="#pup"/></svg>
     </symbol>
     <symbol id="ico-canteiros" viewBox="0 0 48 48">
       <rect x="2" y="2" width="44" height="44" rx="9" fill="#22304A"/>
@@ -448,14 +497,14 @@ function colorRects(n,rects,seed){var owner=new Array(n*n).fill(-1);rects.forEac
    ===================================================================== */
 var KEY="quintal-caramelo-v2",KEY_OLD="quintal-caramelo-v1";
 function blankMode(){return{level:1,done:{},daily:{}}}
-function freshStore(){return{sound:true,how:{},m:{canteiros:blankMode(),cercadinhos:blankMode(),labirinto:blankMode(),foto:blankMode()},current:{}}}
+function freshStore(){return{sound:true,how:{},m:{canteiros:blankMode(),cercadinhos:blankMode(),labirinto:blankMode(),foto:blankMode(),passeio:blankMode()},current:{}}}
 var store=null;
 try{store=JSON.parse(localStorage.getItem(KEY)||"null")}catch(e){}
 if(!store||!store.m){store=freshStore();
   try{var o=JSON.parse(localStorage.getItem(KEY_OLD)||"null");
     if(o){store.m.canteiros={level:o.level||1,done:o.done||{},daily:o.daily||{}};store.sound=o.sound!==false;store.how.canteiros=!!o.seenHow;
       if(o.current&&o.current.cells)store.current.canteiros={key:o.current.key,state:{cells:o.current.cells},hints:o.current.hints||0,elapsed:o.current.elapsed||0}}}catch(e){}}
-function ensureModes(){["canteiros","cercadinhos","labirinto","foto"].forEach(function(g){if(!store.m[g])store.m[g]=blankMode()});if(!store.how)store.how={};if(!store.current)store.current={}}
+function ensureModes(){["canteiros","cercadinhos","labirinto","foto","passeio"].forEach(function(g){if(!store.m[g])store.m[g]=blankMode()});if(!store.how)store.how={};if(!store.current)store.current={}}
 ensureModes();
 function save(){try{localStorage.setItem(KEY,JSON.stringify(store))}catch(e){}}
 function streak(){var d=new Date(),n=0;function has(k){return Object.keys(store.m).some(function(g){return store.m[g].daily[k]})}
@@ -715,6 +764,124 @@ ENG.foto={
 };
 
 /* =====================================================================
+   MODO 5 — HORA DO PASSEIO (estacionamento travado + fila por cor)
+   ===================================================================== */
+var BUS_COLORS=["#E5484D","#3B82F6","#F5B82E","#3FB66B","#EC5C93","#8B5CF6","#F07E2E","#22B8CF"];
+var BUS_DIR=[[0,-1],[1,0],[0,1],[-1,0]]; // cima, direita, baixo, esquerda
+var BUS_SLOTS=5;
+function busCells(v){var c=[],hz=v.dir%2===1;for(var k=0;k<v.len;k++)c.push(hz?[v.x+k,v.y]:[v.x,v.y+k]);return c}
+function busPath(v,occ,n){var d=BUS_DIR[v.dir],cs=busCells(v),f=(v.dir===1||v.dir===2)?cs[cs.length-1]:cs[0],x=f[0]+d[0],y=f[1]+d[1],dist=0;
+  while(x>=0&&y>=0&&x<n&&y<n){var o=occ[y*n+x];if(o>=0&&o!==v.id)return{free:false,block:o,dist:dist};x+=d[0];y+=d[1];dist++}
+  return{free:true}}
+function busOcc(P,jam,n){var o=new Array(n*n).fill(-1);P.vans.forEach(function(v){if(jam[v.id])busCells(v).forEach(function(c){o[c[1]*n+c[0]]=v.id})});return o}
+function busFront(P,st){return st.q<P.queue.length?P.queue[st.q]:-1}
+function busTarget(P,st,c){for(var s=0;s<st.slots.length;s++){var id=st.slots[s];if(id>=0&&P.vans[id].color===c&&st.seats[id]<P.vans[id].cap)return s}return -1}
+function busFull(P,st){for(var s=0;s<st.slots.length;s++){var id=st.slots[s];if(id>=0&&st.seats[id]>=P.vans[id].cap)return s}return -1}
+function busSettle(st,P){for(var g=0;g<100000;g++){var f=busFull(P,st);if(f>=0){st.slots[f]=-1;continue}
+  var c=busFront(P,st);if(c<0)return st;var t=busTarget(P,st,c);if(t<0)return st;st.seats[st.slots[t]]++;st.q++}return st}
+function busMoves(st,P,n){var out=[];if(st.slots.indexOf(-1)<0)return out;var occ=busOcc(P,st.jam,n);
+  P.vans.forEach(function(v){if(st.jam[v.id]&&busPath(v,occ,n).free)out.push(v.id)});return out}
+function busSolve(st0,P,n,limit){var seen={},nodes=0;
+  function key(st){return st.jam.map(function(b){return b?1:0}).join("")+"|"+st.slots.join(",")+"|"+st.slots.map(function(id){return id>=0?st.seats[id]:""}).join(",")+"|"+st.q}
+  function dfs(st){if(st.q>=P.queue.length)return[];if(++nodes>limit)return null;var k=key(st);if(seen[k])return null;seen[k]=1;
+    var ms=busMoves(st,P,n),need=function(m){var c=P.vans[m].color;for(var i=st.q;i<P.queue.length;i++)if(P.queue[i]===c)return i;return 1e9};ms.sort(function(a,b){return need(a)-need(b)});
+    for(var i=0;i<ms.length;i++){var ns=JSON.parse(JSON.stringify(st));ns.jam[ms[i]]=false;ns.slots[ns.slots.indexOf(-1)]=ms[i];busSettle(ns,P);var r=dfs(ns);if(r)return[ms[i]].concat(r)}
+    return null}
+  return dfs(busSettle(JSON.parse(JSON.stringify(st0)),P))}
+function busLazy(st0,P,n){var cur=busSettle(JSON.parse(JSON.stringify(st0)),P),order=P.vans.map(function(v){return v.id}).filter(function(id){return cur.jam[id]}).reverse(),first=-1;
+  for(var i=0;i<order.length&&cur.q<P.queue.length;i++){var id=order[i],j=cur.slots.indexOf(-1);if(j<0||!busPath(P.vans[id],busOcc(P,cur.jam,n),n).free)return -1;
+    if(first<0)first=id;cur.jam[id]=false;cur.slots[j]=id;busSettle(cur,P)}
+  return cur.q>=P.queue.length?first:-1}
+function busGenerate(n,seed,C,K){var r=mulberry32(seed),vans=[],occ=new Array(n*n).fill(-1),target=Math.round(n*n*0.74),filled=0;
+  for(var a=0;a<5000&&filled<target;a++){var len=r()<0.4?3:2,dir=Math.floor(r()*4),hz=dir%2===1;
+    var v={x:Math.floor(r()*(hz?n-len+1:n)),y:Math.floor(r()*(hz?n:n-len+1)),len:len,dir:dir,id:vans.length},cs=busCells(v),ok=true;
+    for(var k=0;k<cs.length;k++)if(occ[cs[k][1]*n+cs[k][0]]>=0){ok=false;break}
+    if(!ok||!busPath(v,occ,n).free)continue;
+    vans.push(v);cs.forEach(function(c){occ[c[1]*n+c[0]]=v.id});filled+=len}
+  vans.forEach(function(v){v.cap=v.len===3?6:4});
+  // simula uma partida "ideal" na ordem de saída e monta a fila a partir dela
+  var order=vans.map(function(v){return v.id}).reverse(),slots=new Array(BUS_SLOTS).fill(-1),seats=new Array(vans.length).fill(0),queue=[],oi=0,cols=shuffle(range(BUS_COLORS.length),r).slice(0,C);
+  for(var g=0;g<100000;g++){var parked=slots.filter(function(s){return s>=0});
+    while(parked.length<K&&oi<order.length){var used=parked.map(function(id){return vans[id].color}),free=cols.filter(function(c){return used.indexOf(c)<0});
+      var id=order[oi++];vans[id].color=free[Math.floor(r()*free.length)];slots[slots.indexOf(-1)]=id;parked.push(id)}
+    if(!parked.length)break;
+    var pick=parked[Math.floor(r()*parked.length)],rem=vans[pick].cap-seats[pick],ch=Math.min(rem,1+Math.floor(r()*3));
+    for(var q=0;q<ch;q++)queue.push(vans[pick].color);seats[pick]+=ch;if(seats[pick]>=vans[pick].cap)slots[slots.indexOf(pick)]=-1}
+  return{vans:vans,queue:queue}}
+function busVanSVG(len,dir,color){var L=len*100,W=dir%2?L:100,H=dir%2?100:L,cx=(20+L-42)/2;
+  var tf=dir===1?"":dir===3?' transform="translate('+L+',100) rotate(180)"':dir===2?' transform="translate(100,0) rotate(90)"':' transform="translate(0,'+L+') rotate(-90)"';
+  return'<svg viewBox="0 0 '+W+' '+H+'" aria-hidden="true"><g'+tf+'>'+
+    '<rect x="16" y="2" width="30" height="14" rx="5" fill="#2B2B33"/><rect x="'+(L-50)+'" y="2" width="30" height="14" rx="5" fill="#2B2B33"/>'+
+    '<rect x="16" y="84" width="30" height="14" rx="5" fill="#2B2B33"/><rect x="'+(L-50)+'" y="84" width="30" height="14" rx="5" fill="#2B2B33"/>'+
+    '<rect x="6" y="10" width="'+(L-12)+'" height="80" rx="24" fill="'+color+'" stroke="rgba(0,0,0,.32)" stroke-width="4"/>'+
+    '<rect x="'+(L-38)+'" y="20" width="22" height="60" rx="9" fill="#D7EEF9" stroke="rgba(0,0,0,.22)" stroke-width="3"/>'+
+    '<rect x="20" y="22" width="'+(L-64)+'" height="56" rx="14" fill="#fff" opacity=".28"/>'+
+    '<path d="M'+(cx-20)+' 50h34m-14-15l15 15-15 15" stroke="#fff" stroke-width="11" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'+
+    '</g></svg>'}
+ENG.passeio={
+  name:"Hora do Passeio",
+  desc:"Tire as vans do estacionamento e leve cada filhote na van da sua cor.",
+  rules:["Toque numa van com a saída livre","Ela vai para uma vaga","Filhotes entram na van da sua cor"],
+  tip:"Toque numa van: ela sai na direção da seta se nada estiver na frente · são só 5 vagas!",
+  how:'<div><span class="ico" style="background:#7FC8F0">1</span><span>Os filhotes da creche vão <b>passear</b>! Cada um só entra na <b>van da sua cor</b>.</span></div>'+
+      '<div><span class="ico" style="background:#F2A36B">➜</span><span><b>Toque numa van</b> com o caminho livre na direção da seta. Ela sai do estacionamento e para numa <b>vaga</b>.</span></div>'+
+      '<div><span class="ico" style="background:#5DB24E">✓</span><span>Os filhotes da frente da fila entram sozinhos. <b>Van cheia vai embora</b> e libera a vaga.</span></div>'+
+      '<div><span class="ico" style="background:#E5484D">5</span><span>Cuidado: são só <b>5 vagas</b>. Se lotar sem a cor do filhote da frente, use <b>Desfazer</b>.</span></div>'+
+      '<div><svg viewBox="0 0 100 60"><use href="#bone"/></svg><span>Travou? Um <b>ossinho</b> mostra uma boa van para tirar agora. Sem dicas você ganha 3 patinhas.</span></div>',
+  sizeFor:function(l){return l<=3?5:l<=8?6:l<=16?7:8},
+  diff:function(n){return n===5?"fácil":n===6?"tranquilo":n===7?"esperto":"desafiador"},
+  dailySize:7,seed:function(mode,level){return mode==="daily"?todayKey()*47+13:level*8807+31},
+  create:function(n,seed){var C=n===5?3:n===6?4:n===7?5:6,K=n===5?1:n===6?2:n===7?3:4;return busGenerate(n,seed,C,K)},
+  empty:function(){var P=G.p;return{jam:P.vans.map(function(){return true}),slots:new Array(BUS_SLOTS).fill(-1),seats:P.vans.map(function(){return 0}),q:0,moves:0}},
+  isEmpty:function(){return G.state.moves===0},
+  build:function(){var n=G.n,P=G.p,h="";board.className="board bus";
+    h+='<div class="bq"><svg class="stop" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="47" fill="#fff" stroke="#22304A" stroke-width="5"/><use href="#juma" x="8" y="6" width="84" height="84"/></svg><div class="pups"></div><span class="more"></span></div>';
+    h+='<div class="bslots">';for(var s=0;s<BUS_SLOTS;s++)h+='<div class="bslot"><div class="park"></div></div>';h+='</div>';
+    h+='<div class="jam">';P.vans.forEach(function(v){var hz=v.dir%2===1;
+      h+='<div class="van" data-id="'+v.id+'" style="left:'+(v.x/n*100)+'%;top:'+(v.y/n*100)+'%;width:'+((hz?v.len:1)/n*100)+'%;height:'+((hz?1:v.len)/n*100)+'%">'+busVanSVG(v.len,v.dir,BUS_COLORS[v.color])+'</div>'});
+    h+='</div><div class="stuck" hidden><b>Estacionamento lotado!</b><span>Nenhuma vaga tem van da cor do filhote da frente.</span><div class="row"><button class="btn primary" data-a="undo">Desfazer</button><button class="btn soft" data-a="clear">Recomeçar</button></div></div>';
+    board.innerHTML=h;var ui={pups:board.querySelector(".pups"),more:board.querySelector(".more"),slots:[].slice.call(board.querySelectorAll(".bslot")),vans:{},stuck:board.querySelector(".stuck"),last:[]};
+    board.querySelectorAll(".van").forEach(function(el){ui.vans[el.dataset.id]=el});
+    ui.stuck.querySelector('[data-a="undo"]').onclick=function(){$("undoBtn").click()};
+    ui.stuck.querySelector('[data-a="clear"]').onclick=function(){$("clearBtn").click()};
+    G.ui=ui},
+  render:function(){var P=G.p,st=G.state,ui=G.ui,n=G.n,self=this;
+    P.vans.forEach(function(v){var el=ui.vans[v.id];if(st.jam[v.id]){if(el.hidden||el.classList.contains("drive")){el.hidden=false;el.classList.remove("drive");el.style.transform=""}}
+      else if(!el.classList.contains("drive"))el.hidden=true});
+    ui.slots.forEach(function(sl,s){var id=st.slots[s],pk=sl.firstChild;
+      if(String(id)!==pk.dataset.id){pk.dataset.id=id;pk.className="park"+(id>=0?" pop":"");
+        pk.innerHTML=id>=0?busVanSVG(P.vans[id].len,0,BUS_COLORS[P.vans[id].color])+'<span class="seat" style="background:'+BUS_COLORS[P.vans[id].color]+'"></span>':""}
+      if(id>=0)pk.lastChild.textContent=P.vans[id].cap-st.seats[id]});
+    var vis=10,h="";for(var i=st.q;i<Math.min(P.queue.length,st.q+vis);i++)h+='<svg class="pup" viewBox="0 0 100 100" style="color:'+BUS_COLORS[P.queue[i]]+'"><use href="#pup"/></svg>';
+    ui.pups.innerHTML=h;var rest=P.queue.length-st.q-vis;ui.more.textContent=rest>0?"+"+rest:"";ui.more.hidden=rest<=0;
+    var stuck=st.q<P.queue.length&&st.slots.indexOf(-1)<0&&busFull(P,st)<0&&busTarget(P,st,busFront(P,st))<0;
+    ui.stuck.hidden=!stuck;
+    this.kick();
+    return{label:st.q+"/"+P.queue.length+" filhotes",bad:stuck?1:0,won:st.q>=P.queue.length&&st.slots.every(function(s){return s<0})}},
+  kick:function(){if(G._bp||G.won)return;var P=G.p,st=G.state,full=busFull(P,st),c=busFront(P,st),t=c>=0?busTarget(P,st,c):-1;if(full<0&&t<0)return;
+    var g=G,self=this;G._bp=setTimeout(function(){g._bp=null;if(G!==g||G.won)return;self.tick();render()},full>=0?240:95)},
+  tick:function(){var P=G.p,st=G.state,f=busFull(P,st);
+    if(f>=0){var sl=G.ui.slots[f],pk=sl.firstChild,gh=document.createElement("div");gh.className="ghost";gh.innerHTML=pk.innerHTML;sl.appendChild(gh);setTimeout(function(){gh.remove()},500);
+      st.slots[f]=-1;sfx("dog");return}
+    var c=busFront(P,st),t=busTarget(P,st,c);if(t<0)return;st.seats[st.slots[t]]++;st.q++;tone(760+Math.random()*120,.035,"sine",.05)},
+  tap:function(e){var el=e.target.closest&&e.target.closest(".van");if(!el)return;var id=+el.dataset.id,P=G.p,st=G.state,v=P.vans[id],n=G.n;if(!st.jam[id])return;
+    var cell=board.clientWidth/n,res=busPath(v,busOcc(P,st.jam,n),n),d=BUS_DIR[v.dir];
+    if(!res.free){var px=res.dist*cell+cell*.18;el.animate([{transform:"translate(0,0)"},{transform:"translate("+d[0]*px+"px,"+d[1]*px+"px)"},{transform:"translate(0,0)"}],{duration:260+res.dist*40,easing:"ease-out"});
+      var b=G.ui.vans[res.block];b.animate([{transform:"translate(0,0)"},{transform:"translate("+d[0]*4+"px,"+d[1]*4+"px)"},{transform:"translate(0,0)"}],{duration:200,delay:120+res.dist*30});sfx("bad");return}
+    var s=st.slots.indexOf(-1);if(s<0){toast("Todas as vagas estão ocupadas. Espere uma van encher e ir embora.");el.animate([{transform:"translateX(-3px)"},{transform:"translateX(3px)"},{transform:"translateX(0)"}],{duration:200});sfx("bad");return}
+    var before=clone();st.jam[id]=false;st.slots[s]=id;st.moves++;
+    var far=cell*(n+2);el.classList.add("drive");el.style.transform="translate("+d[0]*far+"px,"+d[1]*far+"px)";
+    setTimeout(function(){if(el.classList.contains("drive")&&!G.state.jam[id])el.hidden=true},400);
+    sfx("pen");commit(before)},
+  down:function(){},move:function(){},up:function(){},
+  hint:function(){var P=G.p,st=G.state,n=G.n,pick=busLazy(st,P,n);if(pick<0){var sol=busSolve(st,P,n,25000);pick=sol&&sol.length?sol[0]:-1}
+    if(pick<0){var ms=busMoves(busSettle(JSON.parse(JSON.stringify(st)),P),P,n),fr=busFront(P,st);
+      if(!ms.length){toast("Não tem van livre para sair. Tente Desfazer.");return null}
+      pick=ms.filter(function(m){return P.vans[m].color===fr})[0];if(pick===undefined)pick=ms[0]}
+    var el=G.ui.vans[pick];return function(){el.classList.remove("hinted");void el.offsetWidth;el.classList.add("hinted")}}
+};
+
+/* =====================================================================
    CICLO DO JOGO
    ===================================================================== */
 function puzzleKey(mode,level){return mode==="daily"?"d"+todayKey():"l"+level}
@@ -752,7 +919,7 @@ function cellAt(x,y,clamp){var b=board.getBoundingClientRect(),bw=board.clientLe
   if(clamp){cx=Math.max(0,Math.min(G.n-1,cx));cy=Math.max(0,Math.min(G.n-1,cy))}
   else if(cx<0||cy<0||cx>=G.n||cy>=G.n)return -1;
   return cy*G.n+cx}
-board.addEventListener("pointerdown",function(e){if(!G||G.won||D)return;var i=cellAt(e.clientX,e.clientY,false);if(i<0)return;
+board.addEventListener("pointerdown",function(e){if(!G||G.won||D)return;if(eng().tap){eng().tap(e);return}var i=cellAt(e.clientX,e.clientY,false);if(i<0)return;
   e.preventDefault();try{board.setPointerCapture(e.pointerId)}catch(_){}eng().down(i)});
 board.addEventListener("pointermove",function(e){if(!D)return;eng().move(cellAt(e.clientX,e.clientY,true))});
 function endDrag(){if(!D)return;eng().up()}
@@ -771,7 +938,7 @@ function win(){G.won=true;G.elapsed=G.elapsed+(performance.now()-G.startAt);G.st
   else{if(better(m.done[G.level]))m.done[G.level]=rec;if(m.level<=G.level)m.level=G.level+1}
   delete store.current[G.game];save();sfx("win");board.classList.add("won");render();
   setTimeout(function(){
-    $("winTitle").textContent=G.mode==="daily"?"Desafio vencido!":G.game==="cercadinhos"?"Todo mundo cercado!":G.game==="labirinto"?(G.p.kind==="both"?"Hora de brincar!":"Encontrou!"):G.game==="foto"?"Foto pronta!":"Todo mundo no lugar!";
+    $("winTitle").textContent=G.mode==="daily"?"Desafio vencido!":G.game==="cercadinhos"?"Todo mundo cercado!":G.game==="labirinto"?(G.p.kind==="both"?"Hora de brincar!":"Encontrou!"):G.game==="foto"?"Foto pronta!":G.game==="passeio"?"Todo mundo passeando!":"Todo mundo no lugar!";
     $("winTime").textContent=fmt(G.elapsed);$("winHints").textContent=G.hints;
     var r=$("rating");r.innerHTML="";for(var i=0;i<3;i++)r.insertAdjacentHTML("beforeend",'<svg viewBox="0 0 100 100" class="'+(i<paws?"":"off")+'"><use href="#paw"/></svg>');
     var msgs=["Que faro! Nem a Juma nem o Bart precisaram ajudar.","Bom trabalho! Só um ossinho gasto.","Conseguiu! Na próxima tenta com menos ossinhos."];
